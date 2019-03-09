@@ -4,9 +4,20 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
-    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-    <link rel="stylesheet" href="main.css">
+    <style>
+      #rectangleWrapper{
+      display: grid;
+      grid-template-columns: repeat(5, auto);
+      grid-gap: 10px;
+      align-items: center;
+      }
+      .rectangle{
+          text-align: center;
+      }
+      .colorBg{
+          height: 80px;
+      }
+    </style>
 </head>
 <body>
 <!--
@@ -21,9 +32,8 @@ Create a very simple webpage, displaying some of your favorite colors. Use HTML,
 6. When the page loads, console.log the messages "Here are the rectangle IDs" and then console.log all the rectangles' IDs, one at a time.
 7. In the <head> of the document, add a <title> tag that matches the text in the <h1> you added in step 1.
 -->    
-    <section class="section">
         <div class="container">
-          <h1 class="title is-primary">
+          <h1>
             DOM
           </h1>
           <h2 class="subtitle">
@@ -33,8 +43,54 @@ Create a very simple webpage, displaying some of your favorite colors. Use HTML,
 
           </div>
         </div>
-      </section>
-    
-    <script src="dom.js"></script>
-</body>
+
+    <script>
+    //create element
+    let rectangleWrapper = document.getElementById("rectangleWrapper");
+
+    //create rectangle function
+    function createRectangle(){
+        for (let i = 0; i < 10; i++) {
+            let rectangleBox = document.createElement("div");
+            let colorBg =  document.createElement("div");
+            let colorName =  document.createElement("h4");
+            rectangleBox.className = "rectangle";
+            rectangleBox.setAttribute("id", `rect-${i}`);
+            colorBg.className = "colorBg";
+            colorName.innerText = `#FF5${i}${i}${i}`;
+            colorBg.setAttribute("style", `background-color: #FF5${i}${i}${i}`);
+            rectangleBox.appendChild(colorBg);
+            rectangleBox.appendChild(colorName);
+            rectangleWrapper.appendChild(rectangleBox);
+        }
+        rectangleWrapper.setAttribute("style","padding: 50px 50px 0");
+
+    //Print each rectangle ID function
+        function printRectangleId(){
+            const newRectangles = rectangleWrapper.querySelectorAll(".rectangle");
+            console.log("Here are the rectangle IDs");
+            rectangleIds = [];
+            newRectangles.forEach(function(rectangleId){
+                console.log(rectangleId.id);
+                //rectangleIds += rectangleId.id+", ";
+            });
+            //console.log("Here are the rectangle IDs:" + rectangleIds);
+            
+        }
+        printRectangleId();
+
+        //Update title as per H1
+        function updateTitle(){
+            const h1 = document.getElementsByTagName("h1");
+            const heading = h1[0].innerText;
+            let title = document.createElement("title");
+            title.innerHTML = heading;
+            let head = document.getElementsByTagName("head");
+            head[0].appendChild(title);
+        }
+        updateTitle();
+    }
+    createRectangle();
+  </script>  
+  </body>
 </html>
