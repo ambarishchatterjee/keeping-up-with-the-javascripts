@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Homework Assignment #8</title>
+    <style>
+        body{
+            min-height: 100vh;
+            text-align: center;
+        }
+        #gameBoard{
+            display: grid;
+            grid-template-columns: repeat(3, auto);
+            grid-gap: 10px;
+            max-width: 400px;
+            margin: auto;
+            align-items: center;
+            background-color: aquamarine;
+        }
+        .gamecell{
+            cursor: pointer;
+            background-color: aliceblue;
+            min-height: 120px;
+            align-self: center;
+            text-align: center;
+            line-height: 120px;
+            font-size: 60px;
+        }
+    </style>
+</head>
+<body>
+    <h1>TIC TAC TOE</h1>
+    <div id="gameBoard">
+    </div>
+    <script>
+        //gamepad area
+        let gameBoard = document.getElementById("gameBoard");
+
+        function createBoard(){
+            for (let i = 0; i < 9; i++) {
+                
+                const gamecell = document.createElement("div");
+                gamecell.className = "gamecell";
+                gamecell.setAttribute("id","cell-"+i);
+                gamecell.setAttribute("dataid",i);
+                //gamecell.innerHTML = null;
+                gameBoard.appendChild(gamecell);
+                
+            }
+            let player1 = "X";
+            let player2 = "O";
+
+            let currentTurn = 1;
+            let movesMade = 0;
+
+            function declareWinner(winner) {
+                winner = winner === player1 ? 'X' : 'O';
+                alert(winner + " has won!");
+                reset();
+            }
+            function reset(){
+                let moves = Array.prototype.slice.call(sqr);
+                    moves.forEach((square)=>{
+                square.innerHTML = "";
+                    });
+                    currentTurn = 1;
+                    movesMade = 0;
+            }
+
+
+            let sqr = gameBoard.querySelectorAll(".gamecell");
+
+            sqr.forEach(cell => {
+                cell.addEventListener("click",(e) => {
+                    movesMade++;
+                    if(currentTurn === 1){
+                        event.target.innerHTML = player1;
+                        event.target.style.color = "red";
+                        currentTurn++;
+                    }else{
+                        event.target.innerHTML = player2;
+                        event.target.style.color = "black"
+                        currentTurn--;
+                    }
+                    if (checkForWinners()) {
+                        theWinner = currentTurn == 1 ? player2 : player1;
+                        declareWinner(theWinner);
+                    }
+                // console.log(movesMade);
+
+                    if(movesMade == 9){
+                        alert("Cats game!");
+                        reset();
+                        
+                    }
+                    
+                });
+            });
+            
+            function checkForWinners() {
+                results = [];
+                if(movesMade > 4){
+                    let moves = Array.prototype.slice.call(sqr);
+                    moves.forEach((square)=>{
+                    results.push(square.innerHTML);
+                    });                
+                
+                //console.log(results);
+                
+                let winningComb = [
+                    [0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]
+                ];
+                return winningComb.find((combo) => {
+                    if(results[combo[0]] !== "" && results[combo[1]] !== "" && results[combo[2]] !== "" && results[combo[0]] === results[combo[1]] && results[combo[1]] === results[combo[2]]){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                    
+                });
+            }
+            }
+            
+        };
+
+        createBoard();
+
+    </script>
+</body>
+</html>
